@@ -2,7 +2,7 @@
 
 # Viewstamped Replication Made Famous
 ## A $20,000 Consensus Challenge
-*Brought to you by [Coil](https://www.coil.com) and [TigerBeetle](https://tigerbeetle.com) in partnership with our friends at the [Zig Software Foundation (ZFS)](https://ziglang.org).*
+*Brought to you by [Coil](https://www.coil.com) and [TigerBeetle](https://tigerbeetle.com) in partnership with our friends at the [Zig Software Foundation (ZSF)](https://ziglang.org).*
 
 > Do you love distributed systems, high availability and fault tolerance? Do network partitions and consensus protocols scare you? Have you watched War Games, Hackers and Sneakers more than once? Ever wanted to be a bounty hunter but didn't know where to start?
 
