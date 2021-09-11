@@ -53,6 +53,7 @@ Furthermore, to be clear, the scope:
 
 * **Excludes the reconfiguration protocol** as specified in the *Viewstamped Replication Revisited* paper.
 * **Excludes any snapshot protocol** as specified in the *Viewstamped Replication Revisited* or *Protocol-Aware Recovery for Consensus-Based Storage* papers, which is a work-in-progress for TigerBeetle. The implementation here provides a fixed-size log limited to a fixed number of entries, and exceeding this log is beyond the scope of the challenge.
+* **Excludes the Recovery Protocol at replica startup** just for the next few days, as we plan to have this completed soon (along with crash fault injection in the VOPR).
 * **Excludes data scrubbing** as this is a work-in-progress for TigerBeetle.
 * **Excludes all other codebases outside this repo, such as the main TigerBeetle repo**. We have forked the precise implementation to be used here for the purpose of this challenge to provide a generic "batteries-included" implementation that anyone can run.
 * **Excludes Byzantine faults**, for example, where the operators of servers and clients are malicious.
