@@ -1,0 +1,12 @@
+name: Other
+description: Issues not related to bugs
+title: "Issue: "
+labels: [Other]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A description of issues not related to bugs. This would include any issues relating to the challenge, or the README file, etc.
+    validations:
+      required: false

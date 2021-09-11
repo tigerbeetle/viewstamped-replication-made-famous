@@ -1,0 +1,57 @@
+name: Liveness Submission ($250 - $500)
+description: File a liveness bug submission
+title: "Liveness: "
+labels: [Liveness]
+body:
+  - type: markdown
+    attributes:
+      value: _Please write submissions in English. All fields are optional, but please make your submission as awesome as you can_.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description and Impact
+      description: A clear and detailed description of the bug and its impact. Why is this a liveness bug?
+    validations:
+      required: false
+  - type: textarea
+    id: reproduce-bug
+    attributes:
+      label: Steps to Reproduce the Bug
+      description: A deterministic way to reproduce the bug, including the initialization steps.
+    validations:
+      required: false
+  - type: textarea
+    id: suggestions
+    attributes:
+      label: Suggested Fix
+      description: Provide a suggested fix and explain why it works and why it doesn’t introduce any further bugs.
+    validations:
+      required: false
+  - type: textarea
+    id: story
+    attributes:
+      label: The Story Behind the Bug
+      description: Share the story of how you discovered your bug. How did you approach this challenge? What was the breakthrough that led you to find this bug?
+    validations:
+      required: false
+  - type: textarea
+    id: songs
+    attributes:
+      label: Songs Enjoyed During the Production of This Issue
+      description: Any awesome music tracks you listened to along the way.
+    validations:
+      required: false
+  - type: textarea
+    id: literature
+    attributes:
+      label: Literature
+      description: Links to any literature that you used.
+    validations:
+      required: false
+  - type: textarea
+    id: extra
+    attributes:
+      label: The Last Word
+      description: This is your space to add anything else (e.g. thoughts about VR, feedback about the challenge etc.)
+    validations:
+      required: false
