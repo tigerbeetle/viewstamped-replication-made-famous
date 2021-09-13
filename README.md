@@ -8,6 +8,8 @@
 
 If you answered **Yes!!!** to any of the above, then this is your invitation to test *our skills* and **learn consensus the fun way**, by hacking [TigerBeetle](https://www.tigerbeetle.com)'s biodigital jazz version of the pioneering Viewstamped Replication consensus protocol, and earning bounties of **up to $3,000 for a correctness bug** and **up to $500 for a liveness bug**, within scope, in a $20,000 consensus challenge.
 
+**[Watch the launch event on Zig SHOWTIME for an introduction to the protocol and behind-the-scenes interviews with Dr Brian M. Oki and Dr James Cowling.](https://www.youtube.com/watch?v=_Jlikdtm4OA)**
+
 ## Shall we play a game?
 
 * [Who can participate?](#who-can-participate)
