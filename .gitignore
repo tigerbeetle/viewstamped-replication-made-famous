@@ -1,3 +1,8 @@
 .DS_Store
 simulator
 zig
+src/zig-cache
+
+#Project Files
+.idea
+*.iml
