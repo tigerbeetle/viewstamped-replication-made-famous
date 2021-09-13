@@ -26,14 +26,16 @@ var cluster: *Cluster = undefined;
 pub fn main() !void {
     // TODO Use std.testing.allocator when all deinit() leaks are fixed.
     const allocator = std.heap.page_allocator;
+    const ga = std.testing.allocator;
 
     var args = std.process.args();
 
     // Skip argv[0] which is the name of this executable:
-    _ = args.nextPosix();
+    const prog_name = args.next(ga).? catch @panic("Unable to fetch next arguments for program name");
+    defer ga.free(prog_name);
 
     const seed_random = std.crypto.random.int(u64);
-    const seed = if (args.nextPosix()) |bytes| parse_seed(bytes) else seed_random;
+    const seed = if (args.next(ga)) |err_or_bytes| parse_seed(err_or_bytes catch @panic("Unable to extract provided seed from args")) else seed_random;
 
     if (std.builtin.mode == .ReleaseFast or std.builtin.mode == .ReleaseSmall) {
         // We do not support ReleaseFast or ReleaseSmall because they disable assertions.
@@ -256,6 +258,7 @@ fn client_callback(
 }
 
 fn parse_seed(bytes: []const u8) u64 {
+    defer std.testing.allocator.free(bytes);
     return std.fmt.parseUnsigned(u64, bytes, 10) catch |err| switch (err) {
         error.Overflow => @panic("seed exceeds a 64-bit unsigned integer"),
         error.InvalidCharacter => @panic("seed contains an invalid character"),
