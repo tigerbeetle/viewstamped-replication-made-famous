@@ -1052,7 +1052,7 @@ pub fn Journal(comptime Replica: type, comptime Storage: type) type {
         fn write_prepare_header_once(self: *Self, header: *const Header) bool {
             // TODO Optimize this to decide whether to write once or twice once we add support to
             // recover from either header version at startup.
-            const always_write_twice = false;
+            const always_write_twice = true;
             if (always_write_twice) return false;
 
             // TODO Snapshots
