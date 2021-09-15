@@ -31,6 +31,7 @@ If you answered **Yes!!!** to any of the above, then this is your invitation to 
 * [Can I be awesome and make Viewstamped Replication famous?](#can-i-be-awesome-and-make-viewstamped-replication-famous)
 * [FAQ](#faq)
 * [Thanks](#thanks)
+* [The legal stuff](#the-legal-stuff)
 
 ## Who can participate?
 
@@ -344,3 +345,26 @@ We'd like to offer our sincere gratitude to you for participating in TigerBeetle
 * Most of all, we hope that Viewstamped Replication will come to occupy a special place in your heart and mind as the pioneering consensus protocol it is.
 
 **Thank you for making this happen, as together we see Viewstamped Replication Made Famous!**
+
+## The legal stuff
+
+1. Any reliance you place on any information provided here, on our website or during the course of this challenge is strictly at your own risk. We will not accept any responsibility for any loss whatsoever which may arise from reliance on information or materials published or made available to you.
+
+2. By taking part in this challenge, you agree to be bound to the terms as set out herein, to the extent that they are applicable to you. You may not take part in this challenge if you do not agree with these terms. You warrant that you have the legal capacity to agree to and be bound by these terms.
+
+3. Subject to applicable laws, we give no warranties or make any representations whatsoever as to the nature and operation of the challenge. Since entries will be unique, the choosing of winners is subjective and at our discretion. As such, we make no warranties or representations to the way the challenge is to be conducted, the manner in which winners will be chosen, or your success of winning, nor that the challenge will operate error free or without interruption or that any errors will be corrected or that the content is complete, accurate, up to date, or fit for a particular purpose.
+
+4. You agree that your entry shall not infringe on the intellectual property of any third party, in particular (and without limitation) any copyright.
+
+5. We will not be liable to you or any other party for any loss caused by your participation in this challenge or your liability to any third party arising therefrom. This includes, but is not limited to:
+
+* any loss or damage resulting from your participation in the challenge;
+* any interruption, malfunction, downtime, offline situation or other failure relating to the system supporting the challenge;
+* any loss or damage regarding your data or other data directly or indirectly caused by a malfunction; and
+* any third-party systems whatsoever, power failures, unlawful access to or theft of data, computer viruses or destructive code, or third-party systems or programming defects.
+
+6. Our limited liability applies to all and any kind of loss which can possibly result under law, including direct, indirect, consequential, special or other kinds of losses or claims which you may suffer (which may include, without limitation, loss of business, loss of profits or contracts, loss of income or revenue, loss of anticipated savings or loss of goodwill).
+
+7. You shall indemnify, defend and hold us (including our shareholders, directors and employees, in whose favour this constitutes a stipulation capable of acceptance in writing at any time), our affiliates and their employees and suppliers harmless from any and all third party claims, any, actions, suits, proceedings, penalties, judgments, disbursements, fines, costs, expenses, damages (including, without limitation, indirect, extrinsic, special, penal, punitive, exemplary or consequential loss or damage of any kind) and liabilities, including reasonable attorneys' fees, whether directly or indirectly arising out of, relating to, or resulting from negligence, intent, breach of these terms or violation of applicable law, rule, regulation by a party or its affiliates, or their respective owners, officers, directors, employees, or representatives or any other action or omission of any nature.
+
+Copyright © 2021 Coil Technologies, Inc. All rights reserved.
