@@ -26,16 +26,18 @@ var cluster: *Cluster = undefined;
 pub fn main() !void {
     // TODO Use std.testing.allocator when all deinit() leaks are fixed.
     const allocator = std.heap.page_allocator;
-    const ga = std.testing.allocator;
 
     var args = std.process.args();
 
     // Skip argv[0] which is the name of this executable:
-    const prog_name = args.next(ga).? catch @panic("Unable to fetch next arguments for program name");
-    defer ga.free(prog_name);
+    _ = args_next(&args, allocator);
 
     const seed_random = std.crypto.random.int(u64);
-    const seed = if (args.next(ga)) |err_or_bytes| parse_seed(err_or_bytes catch @panic("Unable to extract provided seed from args")) else seed_random;
+    const seed = seed_from_arg: {
+        const arg_two = args_next(&args, allocator) orelse break :seed_from_arg seed_random;
+        defer allocator.free(arg_two);
+        break :seed_from_arg parse_seed(arg_two);
+    };
 
     if (std.builtin.mode == .ReleaseFast or std.builtin.mode == .ReleaseSmall) {
         // We do not support ReleaseFast or ReleaseSmall because they disable assertions.
@@ -201,6 +203,12 @@ fn chance(random: *std.rand.Random, p: u8) bool {
     return random.uintAtMost(u8, 100) <= p;
 }
 
+/// Returns the next argument for the simulator or null (if none available)
+fn args_next(args: *std.process.ArgIterator, allocator: *std.mem.Allocator) ?[:0]const u8 {
+    const err_or_bytes = args.next(allocator) orelse return null;
+    return err_or_bytes catch @panic("Unable to extract next value from args");
+}
+
 fn on_change_replica(replica: *Replica) void {
     assert(cluster.state_machines[replica.replica].state == replica.state_machine.state);
     cluster.state_checker.check_state(replica.replica);
@@ -258,7 +266,6 @@ fn client_callback(
 }
 
 fn parse_seed(bytes: []const u8) u64 {
-    defer std.testing.allocator.free(bytes);
     return std.fmt.parseUnsigned(u64, bytes, 10) catch |err| switch (err) {
         error.Overflow => @panic("seed exceeds a 64-bit unsigned integer"),
         error.InvalidCharacter => @panic("seed contains an invalid character"),
