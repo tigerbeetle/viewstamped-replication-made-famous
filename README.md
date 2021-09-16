@@ -36,13 +36,13 @@ If you answered **Yes!!!** to any of the above, then this is your invitation to 
 
 ## Leaderboard
 
-| Researcher                                | Affiliation                                           | Bug         |    Bounty |      ZSF |
-|-------------------------------------------|-------------------------------------------------------|-------------|-----------|----------|
-| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | Liveness #9 |      $400 |      $40 |
-| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | Liveness #8 |      $350 |      $35 |
-| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | Liveness #7 |      $500 |      $50 |
-| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | Liveness #5 |      $500 |      $50 |
-|                                           |                                                       |             | **$1750** | **$175** |
+| Researcher                                | Affiliation                                           | Bug                                           |    Bounty |      ZSF |
+|-------------------------------------------|-------------------------------------------------------|-----------------------------------------------|-----------|----------|
+| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (crash, misdirected reply)](#9)     |      $400 |      $40 |
+| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (crash, attempts counter wrap)](#8) |      $350 |      $35 |
+| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (stuck, client pong)](#7)           |      $500 |      $50 |
+| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (stuck, io_write_depth)](#5)        |      $500 |      $50 |
+|                                           |                                                       |                                               | **$1750** | **$175** |
 
 ## Who can participate?
 
