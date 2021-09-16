@@ -12,6 +12,7 @@ If you answered **Yes!!!** to any of the above, then this is your invitation to 
 
 ## Shall we play a game?
 
+* [Leaderboard](#leaderboard)
 * [Who can participate?](#who-can-participate)
 * [How long will the challenge run?](#how-long-will-the-challenge-run)
 * [What is the scope?](#what-is-the-scope)
@@ -32,6 +33,16 @@ If you answered **Yes!!!** to any of the above, then this is your invitation to 
 * [FAQ](#faq)
 * [Thanks](#thanks)
 * [The legal stuff](#the-legal-stuff)
+
+## Leaderboard
+
+| Researcher                                | Affiliation                                           | Bug                                                 |     Bounty |      ZSF |
+|-------------------------------------------|-------------------------------------------------------|-----------------------------------------------------|------------|----------|
+| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (crash, misdirected reply)](issues/9)     |       $400 |      $40 |
+| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (crash, attempts counter wrap)](issues/8) |       $350 |      $35 |
+| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (stuck, client pong)](issues/7)           |       $500 |      $50 |
+| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (stuck, io_write_depth)](issues/5)        |       $500 |      $50 |
+|                                           |                                                       |                                                     | **$1,750** | **$175** |
 
 ## Who can participate?
 
