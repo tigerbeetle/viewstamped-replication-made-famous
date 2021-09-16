@@ -83,7 +83,7 @@ Only correctness and liveness bugs, at our sole discretion, may be awarded.
 
 A correctness bug is a bug in this specific implementation that **causes the consistency guarantee of strict serializability to be violated or results in data loss**, and that could have been averted had the protocol been correctly implemented.
 
-* The **combined hardware failure across a majority of servers is explicitly out of scope** for a correctness bug, even though this might result in data loss, because the protocol is expressly designed to tolerate only a minority of server failures.
+* The **combined hardware failure across a majority of servers is explicitly out of scope** for a correctness bug, even though this might result in data loss, because the protocol is expressly designed to tolerate only a minority of server failures in the majority quorum sense (or less than the replication quorum in the Flexible Paxos sense).
 * Any *potential* correctness bug that is nevertheless detected by TigerBeetle through **an assertion that results only in a crash is explicitly out of scope** for a correctness bug, and may be considered as a liveness bug only.
 * Anything that does not violate strict serializability or does not ultimately result in data loss is explicitly out of scope for a correctness bug.
 
@@ -261,7 +261,7 @@ Here's how to interpret the output from a single run of The VOPR:
           read_fault_probability=4%         [ The chance that a read I/O will be corrupted ]
           write_fault_probability=3%        [ The chance that a write I/O will be corrupted ]
 
-          [ I/O corruptions are allowed across all replicas but only for a minority per op ]
+          [ I/O faults are allowed across all replicas for less than the replication quorum per op ]
 
           [ Transitioned from this state ]   [ Transitioned to this state ]   [ Replica ]
      0001 3b25e22e75945b70bd3992602393b53b > 31bea5039f561b174e56420faa76ac07 0 [ Leader ]
