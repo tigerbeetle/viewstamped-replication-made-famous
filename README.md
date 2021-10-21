@@ -221,15 +221,13 @@ For every bounty awarded, **an additional 10% of the value of each bounty will a
 
 ## How can I run the implementation? How many batteries are included? Do you mean I can even run the VOPR?
 
-1. **Cool,** we've provided a batteries-included generic implementation of TigerBeetle's version of Viewstamped Replication here that you can run from a single machine with just a single command: `./vopr.sh`
+1. **Cool,** we've provided a batteries-included generic implementation of TigerBeetle's version of Viewstamped Replication here that you can run from a single machine with just a single command:
+* Linux and macOS: `./vopr.sh`
+* Windows: `.\vopr.bat`
 
 2. **But the cooler thing** is it's also a fuzzing [simulator](src/simulator.zig) we call *The VOPR* [1] to simulate a whole cluster of servers (called replicas, think Blade Runner) and clients interacting, all within a single process, with a [network simulator](src/test/packet_simulator.zig) to simulate all kinds of network faults between them, and with an in-memory [storage simulator](src/test/storage.zig) to simulate all kinds of storage faults, so you can explore huge state spaces in a short amount of time.
 
-3. **What's cooler than being cool? Ice-cold!** That's because *The VOPR* is not just any fuzzing simulator. Firstly, it features a built-in [state checker](src/test/state_checker.zig) that can hook into all the replicas, and check all their state transitions the instant they take place, using cryptographic hash chaining to prove causality and check that all interim state transitions are valid, based on any of the set of inflight client requests at the time, without divergent states, and to check for convergence to the highest state at the end of the simulation. Secondly, *The VOPR* is completely deterministic, so if you find any potential issue or crash, you'll get a seed at the start of the test that you can just plug back into *The VOPR* for a blow-by-blow (and slow) full debug mode replay: `./vopr.sh 1337`
-
-On Linux and macOS, *The VOPR* will automatically install Zig in the repo's root directory for you, the first time you run it. What does *The VOPR* not do? Well, [on Windows, you can download Zig 0.8.0 prebuilt from here, with no compilation required](https://ziglang.org/download/#release-0.8.0).
-
-On Windows, you can run *The VOPR* with `zig run src/simulator.zig -OReleaseSafe` to run a fast simulation or with `zig run src/simulator.zig -- 123` to replay a seed with full debug logging.
+3. **What's cooler than being cool? Ice-cold!** That's because *The VOPR* is not just any fuzzing simulator. Firstly, it features a built-in [state checker](src/test/state_checker.zig) that can hook into all the replicas, and check all their state transitions the instant they take place, using cryptographic hash chaining to prove causality and check that all interim state transitions are valid, based on any of the set of inflight client requests at the time, without divergent states, and to check for convergence to the highest state at the end of the simulation. Secondly, *The VOPR* is completely deterministic, so if you find any potential issue or crash, you'll get a seed at the start of the test that you can just plug back into *The VOPR* for a blow-by-blow (and slow) full debug mode replay: `./vopr.sh 1337` in Linux / macOS or `.\vopr.bat 1337` in Windows. *The VOPR* will automatically install Zig in the repo's root directory for you, the first time you run it.
 
 *The VOPR* requires around **1 GiB of RAM** to simulate everything and will run up to 128 state transitions for a randomly generated simulation world, before moving onto another world with a different set of probabilities, all derived from a single seed.
 
