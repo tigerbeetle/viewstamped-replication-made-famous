@@ -6,7 +6,7 @@
 
 > Do you love distributed systems, high availability and fault tolerance? Do network partitions and consensus protocols scare you? Have you watched War Games, Hackers and Sneakers more than once? Ever wanted to be a bounty hunter but didn't know where to start?
 
-If you answered **Yes!!!** to any of the above, then this is your invitation to test *our skills* and **learn consensus the fun way**, by hacking [TigerBeetle](https://www.tigerbeetle.com)'s biodigital jazz version of the pioneering Viewstamped Replication consensus protocol, and earning bounties of **up to $3,000 for a correctness bug** and **up to $500 for a liveness bug**, within scope, in a $20,000 consensus challenge.
+If you answered *Yes!* to any of the above, then this is your invitation to test *our skills* and **learn consensus the fun way**, by hacking [TigerBeetle](https://www.tigerbeetle.com)'s biodigital jazz version of the pioneering Viewstamped Replication consensus protocol, and earning bounties of **up to $3,000 for a correctness bug** and **up to $500 for a liveness bug**, within scope, in a $20,000 consensus challenge.
 
 **[Watch the launch event on Zig SHOWTIME for an introduction to the protocol and behind-the-scenes interviews with Dr Brian M. Oki and Dr James Cowling.](https://www.youtube.com/watch?v=_Jlikdtm4OA)**
 
@@ -53,7 +53,7 @@ If you answered **Yes!!!** to any of the above, then this is your invitation to 
 
 ## How long will the challenge run?
 
-The challenge will run from 6pm UTC on September 11, 2021 **until 6pm UTC on December 11, 2021, or until the total challenge bounty of $20,000 is fully awarded**, whichever comes first.
+The challenge will run from 6pm UTC on September 11, 2021 **until 6pm UTC on November 30, 2022, or until the total challenge bounty of $20,000 is fully awarded**, whichever comes first.
 
 ## What is the scope? 
 
@@ -165,7 +165,7 @@ The total value of the bounty is $20,000, to be awarded across correctness or li
 | Liveness | $250 - $500 |
 
 * **Bounty payouts and amount, if any, will be determined by us at our sole discretion.** In no event are we obligated to provide a payout for any submission.
-* To be eligible, the issue must be submitted after 6pm UTC on September 11, 2021, and after the publication of this specific implementation, and before 6pm UTC on December 11, 2021 or before the total value of the bounty is exhausted, whichever comes first.
+* To be eligible, the issue must be submitted after 6pm UTC on September 11, 2021, and after the publication of this specific implementation, and before 6pm UTC on November 30, 2022 or before the total value of the bounty is exhausted, whichever comes first.
 * Previous bounty amounts will not be considered a precedent for future bounty amounts.
 * The format, currency and timing of all bounty payouts shall be determined by us at our sole discretion.
 * **You are solely responsible for any transaction fees and tax implications** related to any bounty payouts you may receive.
