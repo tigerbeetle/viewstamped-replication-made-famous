@@ -1,12 +1,12 @@
-![Viewstamped Replication Made Famous - A $20,000 Consensus Challenge](./cover.png)
+![Viewstamped Replication Made Famous - A $20k Consensus Challenge](./cover.png)
 
 # Viewstamped Replication Made Famous
-## A $20,000 Consensus Challenge
+## A $20k Consensus Challenge
 *Brought to you by [Coil](https://www.coil.com) in partnership with our friends at the [Zig Software Foundation (ZSF)](https://ziglang.org).*
 
-> Do you love distributed systems, high availability and fault tolerance? Do network partitions and consensus protocols scare you? Have you watched War Games, Hackers and Sneakers more than once? Ever wanted to be a bounty hunter but didn't know where to start?
+> Do you love distributed systems, high availability and fault tolerance? Do network partitions and consensus protocols scare you? Have you watched War Games, Hackers and Sneakers more than once?
 
-If you answered *Yes!* to any of the above, then this is your invitation to test *our skills* and **learn consensus the fun way**, by hacking [TigerBeetle](https://www.tigerbeetle.com)'s biodigital jazz version of the pioneering Viewstamped Replication consensus protocol, and earning bounties of **up to $3,000 for a correctness bug** and **up to $500 for a liveness bug**, within scope, in a $20,000 consensus challenge.
+If you answered *Yes!* to any of the above, then this is your invitation to test *our skills* and **learn distributed consensus the fun way**, by hacking [TigerBeetle](https://www.tigerbeetle.com)'s biodigital jazz version of the pioneering Viewstamped Replication consensus protocol, and earning bounties of **up to $8192 for a correctness bug** and **up to $2048 for a liveness bug**, within scope, in a $20k consensus challenge.
 
 **[Watch the launch event on Zig SHOWTIME for an introduction to the protocol and behind-the-scenes interviews with Dr Brian M. Oki and Dr James Cowling.](https://www.youtube.com/watch?v=_Jlikdtm4OA)**
 
@@ -53,7 +53,7 @@ If you answered *Yes!* to any of the above, then this is your invitation to test
 
 ## How long will the challenge run?
 
-The challenge will run from 6pm UTC on September 11, 2021 **until 6pm UTC on November 30, 2022, or until the total challenge bounty of $20,000 is fully awarded**, whichever comes first.
+The challenge will run **until 6pm UTC on November 30, 2022, or until the total challenge bounty of $20k is fully awarded**, whichever comes first.
 
 ## What is the scope? 
 
@@ -67,13 +67,13 @@ Furthermore, to be clear, the scope:
 
 * **Excludes the reconfiguration protocol** as specified in the *Viewstamped Replication Revisited* paper.
 * **Excludes any snapshot protocol** as specified in the *Viewstamped Replication Revisited* or *Protocol-Aware Recovery for Consensus-Based Storage* papers, which is a work-in-progress for TigerBeetle. The implementation here provides a fixed-size log limited to a fixed number of entries, and exceeding this log is beyond the scope of the challenge.
-* **Excludes the Recovery Protocol at replica startup** just for the next few days, as we plan to have this completed soon (along with crash fault injection in the VOPR).
+* **Excludes the recovery protocol** as specified in the *Viewstamped Replication Revisited* paper.
 * **Excludes data scrubbing** as this is a work-in-progress for TigerBeetle.
-* **Excludes all other codebases outside this repo, such as the main TigerBeetle repo**. We have forked the precise implementation to be used here for the purpose of this challenge to provide a generic "batteries-included" implementation that anyone can run.
+* **Excludes all other codebases outside this repo, such as the main TigerBeetle repo** (however, if you do happen to find a bug in the main TigerBeetle repo and submit a valid issue there while the challenge is still open, we may award up to $256). We have otherwise forked the precise implementation to be used here for the purpose of this challenge to provide a generic "batteries-included" implementation that anyone can run.
 * **Excludes Byzantine faults**, for example, where the operators of servers and clients are malicious.
 * **Excludes any kind of security issue**, for example, the possibility for a "man-in-the-middle" or a distributed denial of service attack, because this is **a consensus bug bounty challenge not a security bug bounty program**.
 * **Excludes any duplicate reports** that have already been submitted.
-* **Excludes any known issues related to TODOs** as already documented in the implementation.
+* **Excludes any known issues or TODOs** as known to the team or as already documented in the implementation.
 * **Excludes bugs in any test code** within this repository.
 * **Excludes any fixes to the implementation** that have already fixed an issue that is subsequently reported.
 
@@ -157,15 +157,15 @@ A process may:
 
 ## What are the bounty awards?
 
-The total value of the bounty is $20,000, to be awarded across correctness or liveness bugs within scope as follows:
+The total value of the bounty is $20k, to be awarded across correctness or liveness bugs within scope as follows:
 
 | **Bug** | **Bounty** |
 | :--- |:---|
-| Correctness | $1,000 - $3,000 |
-| Liveness | $250 - $500 |
+| Correctness | $4096 — $8192 |
+| Liveness | $1024 — $2048 |
 
 * **Bounty payouts and amount, if any, will be determined by us at our sole discretion.** In no event are we obligated to provide a payout for any submission.
-* To be eligible, the issue must be submitted after 6pm UTC on September 11, 2021, and after the publication of this specific implementation, and before 6pm UTC on November 30, 2022 or before the total value of the bounty is exhausted, whichever comes first.
+* To be eligible, the issue must be submitted after the publication of this specific implementation, and before 6pm UTC on November 30, 2022 or before the total value of the bounty is exhausted, whichever comes first.
 * Previous bounty amounts will not be considered a precedent for future bounty amounts.
 * The format, currency and timing of all bounty payouts shall be determined by us at our sole discretion.
 * **You are solely responsible for any transaction fees and tax implications** related to any bounty payouts you may receive.
@@ -192,7 +192,7 @@ We would also love to hear about:
 
 * How you came across the bug, your hacker thought process or *"metadology"*.
 * Literature that was helpful to you or guided you towards the bug.
-* Any awesome tracks you listened to along the way. Feel free to tag [@TigerBeetleDB](https://twitter.com/TigerBeetleDB) on Twitter and keep an eye out for TigerTracks ;-)
+* Any awesome tracks you listened to along the way.
 
 ## How will submissions be assessed?
 
@@ -215,9 +215,9 @@ We would also love to hear about:
 
 For every bounty awarded, **an additional 10% of the value of each bounty will also be matched and donated by Coil to the Zig Software Foundation** in recognition of their incredible work.
 
-> **Worked Example**: If you are awarded a $3,000 bounty, you will be paid the $3,000 less any transaction fees, and you will be responsible for taxes. Coil will then donate a further bonus of $300 to the ZSF. The remaining balance of the challenge fund will then be $17,000.
+> **Worked Example**: If you are awarded a $8192 bounty, you will be paid the $8192 less any transaction fees, and you will be responsible for taxes. Coil will then donate a further bonus of $819.20 to the ZSF. The remaining balance of the challenge fund will then be $11808.
 
-**Help us spread the word!** We would love to see so many bounties awarded that the ZSF receives the maximum bonus of $2,000.
+**Spread the word!** We would love to see so many bounties awarded that the ZSF receives a maximum bonus of $2000.
 
 ## How can I run the implementation? How many batteries are included? Do you mean I can even run the VOPR?
 
@@ -229,7 +229,7 @@ For every bounty awarded, **an additional 10% of the value of each bounty will a
 
 2. **But the cooler thing** is it's also a fuzzing [simulator](src/simulator.zig) we call *The VOPR* [1] to simulate a whole cluster of servers (called replicas, think Blade Runner) and clients interacting, all within a single process, with a [network simulator](src/test/packet_simulator.zig) to simulate all kinds of network faults between them, and with an in-memory [storage simulator](src/test/storage.zig) to simulate all kinds of storage faults, so you can explore huge state spaces in a short amount of time.
 
-3. **What's cooler than being cool? Ice-cold!** That's because *The VOPR* is not just any fuzzing simulator. Firstly, it features a built-in [state checker](src/test/state_checker.zig) that can hook into all the replicas, and check all their state transitions the instant they take place, using cryptographic hash chaining to prove causality and check that all interim state transitions are valid, based on any of the set of inflight client requests at the time, without divergent states, and to check for convergence to the highest state at the end of the simulation. Secondly, *The VOPR* is completely deterministic, so if you find any potential issue or crash, you'll get a seed at the start of the test that you can just plug back into *The VOPR* for a blow-by-blow (and slow) full debug mode replay: `./vopr.sh 1337` in Linux / macOS or `.\vopr.bat 1337` in Windows.
+3. **What's cooler than being cool? Ice-cold!** That's because *The VOPR* is not just any fuzzing simulator. Firstly, it features a built-in [state checker](src/test/state_checker.zig) that can hook into all the replicas, and check all their state transitions the instant they take place, using cryptographic hash chaining to prove causality and check that all interim state transitions are valid, based on any of the set of inflight client requests at the time, without divergent states, and to check for convergence to the highest state at the end of the simulation. Secondly, *The VOPR* is completely deterministic, so if you find any potential issue or crash, you'll get a seed at the start of the test that you can just plug back into *The VOPR* for a blow-by-blow (and slow) full debug mode replay: e.g. `./vopr.sh 1337` on Linux / macOS or `.\vopr.bat 1337` on Windows.
 
 *The VOPR* requires around **1 GiB of RAM** to simulate everything and will run up to 128 state transitions for a randomly generated simulation world, before moving onto another world with a different set of probabilities, all derived from a single seed.
 
@@ -290,7 +290,7 @@ Asking this question is the first step in the right direction. Here are a few th
 
 * **Get even more excited about Viewstamped Replication** by reading the intuitive [Viewstamped Replication Revisited](http://pmg.csail.mit.edu/papers/vr-revisited.pdf) paper written by Turing Award-winner Barbara Liskov with James Cowling at MIT in 2012, and seeing how simple and elegant the protocol is.
 
-* **Get hooked on Zig** and learn the language in a weekend by playing [Ziglings](https://github.com/ratfactor/ziglings)! *Tip: The consensus implementation that you will hack will be written in Zig and published here when the challenge launches. Zig has an easy learning curve with remarkable readability and simplicity. It's faster, many times safer than C, and pure fun to program distributed systems in!*
+* **Get hooked on Zig** and learn the language in a weekend by playing [Ziglings](https://github.com/ratfactor/ziglings)! *Tip: The consensus implementation that you will hack will be written in Zig and published here when the challenge launches. Zig has an easy learning curve with remarkable readability and simplicity. It's faster, many times safer than C, and pure fun to program distributed systems in.*
 
 * Once you understand the basics of Viewstamped Replication from the revised paper, dive into Brian M. Oki's seminal [Viewstamped Replication](http://pmg.csail.mit.edu/papers/vr.pdf) paper first published in 1988, and **see if you can spot how this already contains all the essential ingredients of consensus** underpinning later consensus protocols. *Go deep: To increase your understanding of consensus, compare the tradeoffs between the 1988 and 2012 editions, and see how the "view changes" of both papers make sense when optimizing for different storage/network latencies.*
 
@@ -319,9 +319,9 @@ We would love to hear from you as you do this, so please [**drop us an email to 
 
 ### What if I am part of a team?
 
-The payout will go to the owner of the GitTub account who submitted the issue. TigerBeetle is not responsible for dividing money up among team members.
+The payout will go to the owner of the GitHub account who submitted the issue. TigerBeetle is not responsible for dividing money up among team members.
 
-**If you are part of a university team, please let us know the name of your university so that we can credit your *Alma mater* in the leaderboard.**
+**If you are part of a university team, please let us know the name of your university so that we can credit your *alma mater* in the leaderboard.**
 
 ### When and how will I know if my bug has been accepted?
 
@@ -337,11 +337,7 @@ No, we will make contact with you by commenting on your GitHub issue and providi
 
 ### Can I win more than one bounty? 
 
-Absolutely! And as you dig deep and get familiar with the protocol (or invest in your consensus hacker stack) it may come more and more easily. You might win multiple bounties in the same category and/or across categories. Maybe one bug will lead to another!
-
-### When will the winners be announced?
-
-We'll be keeping a leaderboard of GitHub handles and bounty awards right here in the README as we go. The question is, who will take pole position?
+Absolutely! And as you dig deep and get familiar with the protocol it may come more and more easily. You might win multiple bounties in the same category and/or across categories. Maybe one bug will lead to another!
 
 ### Is there a discussion forum?
 
@@ -378,4 +374,4 @@ We'd like to offer our sincere gratitude to you for participating in TigerBeetle
 
 7. You shall indemnify, defend and hold us (including our shareholders, directors and employees, in whose favour this constitutes a stipulation capable of acceptance in writing at any time), our affiliates and their employees and suppliers harmless from any and all third party claims, any, actions, suits, proceedings, penalties, judgments, disbursements, fines, costs, expenses, damages (including, without limitation, indirect, extrinsic, special, penal, punitive, exemplary or consequential loss or damage of any kind) and liabilities, including reasonable attorneys' fees, whether directly or indirectly arising out of, relating to, or resulting from negligence, intent, breach of these terms or violation of applicable law, rule, regulation by a party or its affiliates, or their respective owners, officers, directors, employees, or representatives or any other action or omission of any nature.
 
-Copyright © 2021 Coil Technologies, Inc. All rights reserved.
+Copyright © 2021-2022 Coil Technologies, Inc. All rights reserved.
