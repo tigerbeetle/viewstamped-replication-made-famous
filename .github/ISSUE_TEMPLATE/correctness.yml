@@ -1,4 +1,4 @@
-name: Correctness Submission ($1,000 - $3,000)
+name: Correctness Submission ($4,096 - $8,192)
 description: File a correctness bug submission
 title: "Correctness: "
 labels: [Correctness]
