@@ -8,12 +8,13 @@ const Cluster = @import("cluster.zig").Cluster;
 const Network = @import("network.zig").Network;
 const StateMachine = @import("state_machine.zig").StateMachine;
 
-const MessagePool = @import("../message_pool.zig").MessagePool;
+const message_pool = @import("../message_pool.zig");
+const MessagePool = message_pool.MessagePool;
 const Message = MessagePool.Message;
 
 const RingBuffer = @import("../ring_buffer.zig").RingBuffer;
 
-const RequestQueue = RingBuffer(u128, config.message_bus_messages_max - 1);
+const RequestQueue = RingBuffer(u128, config.client_request_queue_max);
 const StateTransitions = std.AutoHashMap(u128, u64);
 
 const log = std.log.scoped(.state_checker);
@@ -34,7 +35,7 @@ pub const StateChecker = struct {
     /// The number of times the cannonical state has been advanced.
     transitions: u64 = 0,
 
-    pub fn init(allocator: *mem.Allocator, cluster: *Cluster) !StateChecker {
+    pub fn init(allocator: mem.Allocator, cluster: *Cluster) !StateChecker {
         const state = cluster.state_machines[0].state;
 
         var state_machine_states: [config.replicas_max]u128 = undefined;
@@ -86,7 +87,7 @@ pub const StateChecker = struct {
         // The replica has transitioned to state `b` that is not yet in the history.
         // Check if this is a valid new state based on all currently inflight client requests.
         for (state_checker.client_requests) |*queue| {
-            if (queue.peek_ptr()) |input| {
+            if (queue.head_ptr()) |input| {
                 if (b == StateMachine.hash(state_checker.state, std.mem.asBytes(input))) {
                     const transitions_executed = state_checker.history.get(a).?;
                     if (transitions_executed < state_checker.transitions) {

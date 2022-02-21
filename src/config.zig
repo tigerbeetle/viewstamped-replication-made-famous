@@ -1,18 +1,19 @@
+const std = @import("std");
+const assert = std.debug.assert;
+
 /// Whether development or production:
 pub const deployment_environment = .development;
 
-/// The maximum log level in increasing order of verbosity (emergency=0, debug=7):
-pub const log_level = 6;
+/// The maximum log level in increasing order of verbosity (emergency=0, debug=3):
+pub const log_level = 2;
 
 /// The maximum number of replicas allowed in a cluster.
-/// This has been limited to 5 just to decrease the amount of memory required by the VOPR simulator.
-pub const replicas_max = 5;
+pub const replicas_max = 6;
 
 /// The maximum number of clients allowed per cluster, where each client has a unique 128-bit ID.
 /// This impacts the amount of memory allocated at initialization by the server.
 /// This determines the size of the VR client table used to cache replies to clients by client ID.
 /// Each client has one entry in the VR client table to store the latest `message_size_max` reply.
-/// This has been limited to 3 just to decrease the amount of memory required by the VOPR simulator.
 pub const clients_max = 3;
 
 /// The minimum number of nodes required to form a quorum for replication:
@@ -88,12 +89,6 @@ pub const connections_max = replicas_max + clients_max;
 /// This impacts the amount of memory allocated at initialization by the server.
 pub const message_size_max = 1 * 1024 * 1024;
 
-/// The number of full-sized messages allocated at initialization by the message bus.
-pub const message_bus_messages_max = connections_max * 4;
-/// The number of header-sized messages allocated at initialization by the message bus.
-/// These are much smaller/cheaper and we can therefore have many of them.
-pub const message_bus_headers_max = connections_max * connection_send_queue_max * 2;
-
 /// The maximum number of Viewstamped Replication prepare messages that can be inflight at a time.
 /// This is immutable once assigned per cluster, as replicas need to know how many operations might
 /// possibly be uncommitted during a view change, and this must be constant for all replicas.
@@ -104,8 +99,15 @@ pub const pipelining_max = clients_max;
 pub const connection_delay_min_ms = 50;
 pub const connection_delay_max_ms = 1000;
 
-/// The maximum number of outgoing messages that may be queued on a connection.
-pub const connection_send_queue_max = pipelining_max;
+/// The maximum number of outgoing messages that may be queued on a replica connection.
+pub const connection_send_queue_max_replica = std.math.max(std.math.min(clients_max, 4), 2);
+
+/// The maximum number of outgoing messages that may be queued on a client connection.
+/// The client has one in-flight request, and occasionally a ping.
+pub const connection_send_queue_max_client = 2;
+
+/// The maximum number of outgoing requests that may be queued on a client (including the in-flight request).
+pub const client_request_queue_max = 32;
 
 /// The maximum number of connections in the kernel's complete connection queue pending an accept():
 /// If the backlog argument is greater than the value in `/proc/sys/net/core/somaxconn`, then it is
@@ -126,7 +128,8 @@ pub const tcp_rcvbuf = 4 * 1024 * 1024;
 /// This sets SO_SNDBUF as an alternative to the auto-tuning range in /proc/sys/net/ipv4/tcp_wmem.
 /// The value is limited by /proc/sys/net/core/wmem_max, unless the CAP_NET_ADMIN privilege exists.
 /// The kernel doubles this value to allow space for packet bookkeeping overhead.
-pub const tcp_sndbuf = 4 * 1024 * 1024;
+pub const tcp_sndbuf_replica = connection_send_queue_max_replica * message_size_max;
+pub const tcp_sndbuf_client = connection_send_queue_max_client * message_size_max;
 
 /// Whether to enable TCP keepalive:
 pub const tcp_keepalive = true;
@@ -220,3 +223,13 @@ pub const clock_synchronization_window_min_ms = 2000;
 /// This eliminates the impact of gradual clock drift on our clock offset (clock skew) measurements.
 /// If a window expires because of this then it is likely that the clock epoch will also be expired.
 pub const clock_synchronization_window_max_ms = 20000;
+
+comptime {
+    // vsr.parse_address assumes that config.address/config.port are valid.
+    _ = std.net.Address.parseIp4(address, 0) catch unreachable;
+    _ = @as(u16, port);
+
+    // Avoid latency issues from a too-large sndbuf.
+    assert(tcp_sndbuf_replica <= 4 * 1024 * 1024);
+    assert(tcp_sndbuf_client <= 4 * 1024 * 1024);
+}

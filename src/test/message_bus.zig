@@ -6,12 +6,13 @@ const config = @import("../config.zig");
 const MessagePool = @import("../message_pool.zig").MessagePool;
 const Message = MessagePool.Message;
 const Header = @import("../vsr.zig").Header;
+const ProcessType = @import("../vsr.zig").ProcessType;
 
 const Network = @import("network.zig").Network;
 
 const log = std.log.scoped(.message_bus);
 
-pub const Process = union(enum) {
+pub const Process = union(ProcessType) {
     replica: u8,
     client: u128,
 };
@@ -25,17 +26,17 @@ pub const MessageBus = struct {
 
     /// The callback to be called when a message is received. Use set_on_message() to set
     /// with type safety for the context pointer.
-    on_message_callback: ?fn (context: ?*c_void, message: *Message) void = null,
-    on_message_context: ?*c_void = null,
+    on_message_callback: ?fn (context: ?*anyopaque, message: *Message) void = null,
+    on_message_context: ?*anyopaque = null,
 
     pub fn init(
-        allocator: *std.mem.Allocator,
+        allocator: std.mem.Allocator,
         cluster: u32,
         process: Process,
         network: *Network,
     ) !MessageBus {
         return MessageBus{
-            .pool = try MessagePool.init(allocator),
+            .pool = try MessagePool.init(allocator, @as(ProcessType, process)),
             .network = network,
             .cluster = cluster,
             .process = process,
@@ -43,7 +44,7 @@ pub const MessageBus = struct {
     }
 
     /// TODO
-    pub fn deinit(bus: *MessageBus) void {}
+    pub fn deinit(_: *MessageBus) void {}
 
     pub fn set_on_message(
         bus: *MessageBus,
@@ -52,16 +53,16 @@ pub const MessageBus = struct {
         comptime on_message: fn (context: Context, message: *Message) void,
     ) void {
         bus.on_message_callback = struct {
-            fn wrapper(_context: ?*c_void, message: *Message) void {
+            fn wrapper(_context: ?*anyopaque, message: *Message) void {
                 on_message(@intToPtr(Context, @ptrToInt(_context)), message);
             }
         }.wrapper;
         bus.on_message_context = context;
     }
 
-    pub fn tick(self: *MessageBus) void {}
+    pub fn tick(_: *MessageBus) void {}
 
-    pub fn get_message(bus: *MessageBus) ?*Message {
+    pub fn get_message(bus: *MessageBus) *Message {
         return bus.pool.get_message();
     }
 

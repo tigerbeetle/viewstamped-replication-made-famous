@@ -15,8 +15,10 @@ pub const Client = @import("vsr/client.zig").Client;
 pub const Clock = @import("vsr/clock.zig").Clock;
 pub const Journal = @import("vsr/journal.zig").Journal;
 
+pub const ProcessType = enum { replica, client };
+
 /// Viewstamped Replication protocol commands:
-pub const Command = packed enum(u8) {
+pub const Command = enum(u8) {
     reserved,
 
     ping,
@@ -223,10 +225,24 @@ pub const Header = packed struct {
         if (self.epoch != 0) return "epoch != 0";
         return switch (self.command) {
             .reserved => self.invalid_reserved(),
+            .ping => self.invalid_ping(),
+            .pong => self.invalid_pong(),
             .request => self.invalid_request(),
             .prepare => self.invalid_prepare(),
             .prepare_ok => self.invalid_prepare_ok(),
-            else => return null, // TODO Add validators for all commands.
+            .reply => self.invalid_reply(),
+            .commit => self.invalid_commit(),
+            .start_view_change => self.invalid_start_view_change(),
+            .do_view_change => self.invalid_do_view_change(),
+            .start_view => self.invalid_start_view(),
+            .recovery => self.invalid_recovery(),
+            .recovery_response => self.invalid_recovery_response(),
+            .request_start_view => self.invalid_request_start_view(),
+            .request_headers => self.invalid_request_headers(),
+            .request_prepare => self.invalid_request_prepare(),
+            .headers => self.invalid_headers(),
+            .nack_prepare => self.invalid_nack_prepare(),
+            .eviction => self.invalid_eviction(),
         };
     }
 
@@ -242,6 +258,28 @@ pub const Header = packed struct {
         if (self.commit != 0) return "commit != 0";
         if (self.offset != 0) return "offset != 0";
         if (self.replica != 0) return "replica != 0";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
+    fn invalid_ping(self: *const Header) ?[]const u8 {
+        assert(self.command == .ping);
+        if (self.parent != 0) return "parent != 0";
+        if (self.context != 0) return "context != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.commit != 0) return "commit != 0";
+        if (self.offset != 0) return "offset != 0";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
+    fn invalid_pong(self: *const Header) ?[]const u8 {
+        assert(self.command == .pong);
+        if (self.parent != 0) return "parent != 0";
+        if (self.client != 0) return "client != 0";
+        if (self.context != 0) return "context != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.commit != 0) return "commit != 0";
         if (self.operation != .reserved) return "operation != .reserved";
         return null;
     }
@@ -336,6 +374,154 @@ pub const Header = packed struct {
         return null;
     }
 
+    fn invalid_reply(self: *const Header) ?[]const u8 {
+        assert(self.command == .reply);
+        // Initialization within `client.zig` asserts that client `id` is greater than zero:
+        if (self.client == 0) return "client == 0";
+        if (self.context != 0) return "context != 0";
+        if (self.op != self.commit) return "op != commit";
+        if (self.operation == .register) {
+            // In this context, the commit number is the newly registered session number.
+            // The `0` commit number is reserved for cluster initialization.
+            if (self.commit == 0) return "commit == 0";
+            if (self.request != 0) return "request != 0";
+        } else {
+            if (self.commit == 0) return "commit == 0";
+            if (self.request == 0) return "request == 0";
+        }
+        return null;
+    }
+
+    fn invalid_commit(self: *const Header) ?[]const u8 {
+        assert(self.command == .commit);
+        if (self.parent != 0) return "parent != 0";
+        if (self.client != 0) return "client != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.op != 0) return "op != 0";
+        if (self.offset != 0) return "offset != 0";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
+    fn invalid_start_view_change(self: *const Header) ?[]const u8 {
+        assert(self.command == .start_view_change);
+        if (self.parent != 0) return "parent != 0";
+        if (self.client != 0) return "client != 0";
+        if (self.context != 0) return "context != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.op != 0) return "op != 0";
+        if (self.commit != 0) return "commit != 0";
+        if (self.offset != 0) return "offset != 0";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
+    fn invalid_do_view_change(self: *const Header) ?[]const u8 {
+        assert(self.command == .do_view_change);
+        if (self.parent != 0) return "parent != 0";
+        if (self.client != 0) return "client != 0";
+        if (self.context != 0) return "context != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
+    fn invalid_start_view(self: *const Header) ?[]const u8 {
+        assert(self.command == .start_view);
+        if (self.parent != 0) return "parent != 0";
+        if (self.client != 0) return "client != 0";
+        if (self.context != 0) return "context != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.offset != 0) return "offset != 0";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
+    fn invalid_recovery(self: *const Header) ?[]const u8 {
+        assert(self.command == .recovery);
+        // TODO implement validation once the message is actually used.
+        return null;
+    }
+
+    fn invalid_recovery_response(self: *const Header) ?[]const u8 {
+        assert(self.command == .recovery_response);
+        // TODO implement validation once the message is actually used.
+        return null;
+    }
+
+    fn invalid_request_start_view(self: *const Header) ?[]const u8 {
+        assert(self.command == .request_start_view);
+        if (self.parent != 0) return "parent != 0";
+        if (self.client != 0) return "client != 0";
+        if (self.context != 0) return "context != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.op != 0) return "op != 0";
+        if (self.commit != 0) return "commit != 0";
+        if (self.offset != 0) return "offset != 0";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
+    fn invalid_request_headers(self: *const Header) ?[]const u8 {
+        assert(self.command == .request_headers);
+        if (self.parent != 0) return "parent != 0";
+        if (self.client != 0) return "client != 0";
+        if (self.context != 0) return "context != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.offset != 0) return "offset != 0";
+        // TODO Add local recovery mechanism for repairing the cluster initialization "zero" op.
+        if (self.op == 0) return "op == 0";
+        if (self.commit > self.op) return "op_min > op_max";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
+    fn invalid_request_prepare(self: *const Header) ?[]const u8 {
+        assert(self.command == .request_prepare);
+        if (self.parent != 0) return "parent != 0";
+        if (self.client != 0) return "client != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.commit != 0) return "commit != 0";
+        if (self.offset != 0) return "offset != 0";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
+    fn invalid_headers(self: *const Header) ?[]const u8 {
+        assert(self.command == .headers);
+        if (self.parent != 0) return "parent != 0";
+        if (self.client != 0) return "client != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.op != 0) return "op != 0";
+        if (self.commit != 0) return "commit != 0";
+        if (self.offset != 0) return "offset != 0";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
+    fn invalid_nack_prepare(self: *const Header) ?[]const u8 {
+        assert(self.command == .nack_prepare);
+        if (self.parent != 0) return "parent != 0";
+        if (self.client != 0) return "client != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.commit != 0) return "commit != 0";
+        if (self.offset != 0) return "offset != 0";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
+    fn invalid_eviction(self: *const Header) ?[]const u8 {
+        assert(self.command == .eviction);
+        if (self.parent != 0) return "parent != 0";
+        if (self.context != 0) return "context != 0";
+        if (self.request != 0) return "request != 0";
+        if (self.op != 0) return "op != 0";
+        if (self.commit != 0) return "commit != 0";
+        if (self.offset != 0) return "offset != 0";
+        if (self.operation != .reserved) return "operation != .reserved";
+        return null;
+    }
+
     /// Returns whether the immediate sender is a replica or client (if this can be determined).
     /// Some commands such as .request or .prepare may be forwarded on to other replicas so that
     /// Header.replica or Header.client only identifies the ultimate origin, not the latest peer.
@@ -387,14 +573,14 @@ pub const Timeout = struct {
     /// Allows the attempts counter to wrap from time to time.
     /// The overflow period is kept short to surface any related bugs sooner rather than later.
     /// We do not saturate the counter as this would cause round-robin retries to get stuck.
-    pub fn backoff(self: *Timeout, prng: *std.rand.DefaultPrng) void {
+    pub fn backoff(self: *Timeout, random: std.rand.Random) void {
         assert(self.ticking);
 
         self.ticks = 0;
         self.attempts +%= 1;
 
         log.debug("{}: {s} backing off", .{ self.id, self.name });
-        self.set_after_for_rtt_and_attempts(prng);
+        self.set_after_for_rtt_and_attempts(random);
     }
 
     /// It's important to check that when fired() is acted on that the timeout is stopped/started,
@@ -403,7 +589,7 @@ pub const Timeout = struct {
         if (self.ticking and self.ticks >= self.after) {
             log.debug("{}: {s} fired", .{ self.id, self.name });
             if (self.ticks > self.after) {
-                log.emerg("{}: {s} is firing every tick", .{ self.id, self.name });
+                log.err("{}: {s} is firing every tick", .{ self.id, self.name });
                 @panic("timeout was not reset correctly");
             }
             return true;
@@ -423,13 +609,13 @@ pub const Timeout = struct {
     /// Sets the value of `after` as a function of `rtt` and `attempts`.
     /// Adds exponential backoff and jitter.
     /// May be called only after a timeout has been stopped or reset, to prevent backward jumps.
-    pub fn set_after_for_rtt_and_attempts(self: *Timeout, prng: *std.rand.DefaultPrng) void {
+    pub fn set_after_for_rtt_and_attempts(self: *Timeout, random: std.rand.Random) void {
         // If `after` is reduced by this function to less than `ticks`, then `fired()` will panic:
         assert(self.ticks == 0);
         assert(self.rtt > 0);
 
         const after = (self.rtt * self.rtt_multiple) + exponential_backoff_with_jitter(
-            prng,
+            random,
             config.backoff_min_ticks,
             config.backoff_max_ticks,
             self.attempts,
@@ -488,7 +674,7 @@ pub const Timeout = struct {
 
 /// Calculates exponential backoff with jitter to prevent cascading failure due to thundering herds.
 pub fn exponential_backoff_with_jitter(
-    prng: *std.rand.DefaultPrng,
+    random: std.rand.Random,
     min: u64,
     max: u64,
     attempt: u64,
@@ -504,35 +690,39 @@ pub fn exponential_backoff_with_jitter(
     // 1<<0 = 1, 1<<1 = 2, 1<<2 = 4, 1<<3 = 8
     const power = std.math.shlExact(u128, 1, exponent) catch unreachable; // Do not truncate.
 
+    // Ensure that `backoff` is calculated correctly when min is 0, taking `std.math.max(1, min)`.
+    // Otherwise, the final result will always be 0. This was an actual bug we encountered.
+    const min_non_zero = std.math.max(1, min);
+    assert(min_non_zero > 0);
+    assert(power > 0);
+
     // Calculate the capped exponential backoff component, `min(range, min * 2 ^ attempt)`:
-    const backoff = std.math.min(range, std.math.max(1, min) * power);
-    const jitter = prng.random.uintAtMostBiased(u64, backoff);
+    const backoff = std.math.min(range, min_non_zero * power);
+    const jitter = random.uintAtMostBiased(u64, backoff);
 
     const result = @intCast(u64, min + jitter);
     assert(result >= min);
     assert(result <= max);
+
     return result;
 }
 
 test "exponential_backoff_with_jitter" {
     const testing = std.testing;
 
-    const attempts = 1000;
     var prng = std.rand.DefaultPrng.init(0);
+    const random = prng.random();
+
+    const attempts = 1000;
     const max: u64 = std.math.maxInt(u64);
     const min = max - attempts;
+
     var attempt = max - attempts;
     while (attempt < max) : (attempt += 1) {
-        const ebwj = exponential_backoff_with_jitter(&prng, min, max, attempt);
+        const ebwj = exponential_backoff_with_jitter(random, min, max, attempt);
         try testing.expect(ebwj >= min);
         try testing.expect(ebwj <= max);
     }
-
-    // Check that `backoff` is calculated correctly when min is 0 by taking `std.math.max(1, min)`.
-    // Otherwise, the final result will always be 0. This was an actual bug we encountered.
-    // If the PRNG ever changes, then there is a small chance that we may collide for 0,
-    // but this is outweighed by the probability that we refactor and fail to take the max.
-    try testing.expect(exponential_backoff_with_jitter(&prng, 0, max, 0) > 0);
 }
 
 /// Returns An array containing the remote or local addresses of each of the 2f + 1 replicas:
@@ -542,19 +732,21 @@ test "exponential_backoff_with_jitter" {
 /// * A replica's IP address may be changed without reconfiguration.
 /// This does require that the user specify the same order to all replicas.
 /// The caller owns the memory of the returned slice of addresses.
-/// TODO Unit tests.
-/// TODO Integrate into `src/cli.zig`.
-pub fn parse_addresses(allocator: *std.mem.Allocator, raw: []const u8) ![]std.net.Address {
-    var addresses = try allocator.alloc(std.net.Address, config.replicas_max);
+pub fn parse_addresses(allocator: std.mem.Allocator, raw: []const u8) ![]std.net.Address {
+    return parse_addresses_limit(allocator, raw, config.replicas_max);
+}
+
+fn parse_addresses_limit(allocator: std.mem.Allocator, raw: []const u8, max: usize) ![]std.net.Address {
+    var addresses = try allocator.alloc(std.net.Address, max);
     errdefer allocator.free(addresses);
 
     var index: usize = 0;
-    var comma_iterator = std.mem.split(raw, ",");
+    var comma_iterator = std.mem.split(u8, raw, ",");
     while (comma_iterator.next()) |raw_address| : (index += 1) {
         if (raw_address.len == 0) return error.AddressHasTrailingComma;
-        if (index == config.replicas_max) return error.AddressLimitExceeded;
+        if (index == max) return error.AddressLimitExceeded;
 
-        var colon_iterator = std.mem.split(raw_address, ":");
+        var colon_iterator = std.mem.split(u8, raw_address, ":");
         // The split iterator will always return non-null once, even if the delimiter is not found:
         const raw_ipv4 = colon_iterator.next().?;
 
@@ -588,6 +780,76 @@ pub fn parse_addresses(allocator: *std.mem.Allocator, raw: []const u8) ![]std.ne
         }
     }
     return addresses[0..index];
+}
+
+test "parse_addresses" {
+    const vectors_positive = &[_]struct {
+        raw: []const u8,
+        addresses: [3]std.net.Address,
+    }{
+        .{
+            // Test the minimum/maximum address/port.
+            .raw = "1.2.3.4:567,0.0.0.0:0,255.255.255.255:65535",
+            .addresses = [3]std.net.Address{
+                std.net.Address.initIp4([_]u8{ 1, 2, 3, 4 }, 567),
+                std.net.Address.initIp4([_]u8{ 0, 0, 0, 0 }, 0),
+                std.net.Address.initIp4([_]u8{ 255, 255, 255, 255 }, 65535),
+            },
+        },
+        .{
+            // Addresses are not reordered.
+            .raw = "3.4.5.6:7777,200.3.4.5:6666,1.2.3.4:5555",
+            .addresses = [3]std.net.Address{
+                std.net.Address.initIp4([_]u8{ 3, 4, 5, 6 }, 7777),
+                std.net.Address.initIp4([_]u8{ 200, 3, 4, 5 }, 6666),
+                std.net.Address.initIp4([_]u8{ 1, 2, 3, 4 }, 5555),
+            },
+        },
+        .{
+            // Test default address and port.
+            .raw = "1.2.3.4:5,4321,2.3.4.5",
+            .addresses = [3]std.net.Address{
+                std.net.Address.initIp4([_]u8{ 1, 2, 3, 4 }, 5),
+                try std.net.Address.parseIp4(config.address, 4321),
+                std.net.Address.initIp4([_]u8{ 2, 3, 4, 5 }, config.port),
+            },
+        },
+    };
+
+    const vectors_negative = &[_]struct {
+        raw: []const u8,
+        err: anyerror![]std.net.Address,
+    }{
+        .{ .raw = "", .err = error.AddressHasTrailingComma },
+        .{ .raw = "1.2.3.4:5,2.3.4.5:6,4.5.6.7:8", .err = error.AddressLimitExceeded },
+        .{ .raw = "1.2.3.4:7777,2.3.4.5:8888,", .err = error.AddressHasTrailingComma },
+        .{ .raw = "1.2.3.4:7777,2.3.4.5::8888", .err = error.AddressHasMoreThanOneColon },
+        .{ .raw = "1.2.3.4:5,A", .err = error.AddressInvalid }, // default port
+        .{ .raw = "1.2.3.4:5,2.a.4.5", .err = error.AddressInvalid }, // default port
+        .{ .raw = "1.2.3.4:5,2.a.4.5:6", .err = error.AddressInvalid }, // specified port
+        .{ .raw = "1.2.3.4:5,2.3.4.5:", .err = error.PortInvalid },
+        .{ .raw = "1.2.3.4:5,2.3.4.5:A", .err = error.PortInvalid },
+        .{ .raw = "1.2.3.4:5,65536", .err = error.PortOverflow }, // default address
+        .{ .raw = "1.2.3.4:5,2.3.4.5:65536", .err = error.PortOverflow },
+    };
+
+    for (vectors_positive) |vector| {
+        const addresses_actual = try parse_addresses_limit(std.testing.allocator, vector.raw, 3);
+        defer std.testing.allocator.free(addresses_actual);
+
+        try std.testing.expectEqual(addresses_actual.len, 3);
+        for (vector.addresses) |address_expect, i| {
+            const address_actual = addresses_actual[i];
+            try std.testing.expectEqual(address_expect.in.sa.family, address_actual.in.sa.family);
+            try std.testing.expectEqual(address_expect.in.sa.port, address_actual.in.sa.port);
+            try std.testing.expectEqual(address_expect.in.sa.addr, address_actual.in.sa.addr);
+            try std.testing.expectEqual(address_expect.in.sa.zero, address_actual.in.sa.zero);
+        }
+    }
+
+    for (vectors_negative) |vector| {
+        try std.testing.expectEqual(vector.err, parse_addresses_limit(std.testing.allocator, vector.raw, 2));
+    }
 }
 
 pub fn sector_floor(offset: u64) u64 {
