@@ -36,13 +36,14 @@ If you answered *Yes!* to any of the above, then this is your invitation to test
 
 ## Leaderboard
 
-| Researcher                                | Affiliation                                           | Bug                                                                                                                         |    Bounty |      ZSF |
-|-------------------------------------------|-------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|-----------|----------|
-| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (assertion crash, misdirected reply)](https://github.com/coilhq/viewstamped-replication-made-famous/issues/9)     |      $400 |      $40 |
-| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (assertion crash, attempts counter wrap)](https://github.com/coilhq/viewstamped-replication-made-famous/issues/8) |      $350 |      $35 |
-| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (stuck, client pong)](https://github.com/coilhq/viewstamped-replication-made-famous/issues/7)                     |      $500 |      $50 |
-| [Ben Fiedler](https://github.com/ThreeFx) | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (stuck, io_write_depth)](https://github.com/coilhq/viewstamped-replication-made-famous/issues/5)                  |      $500 |      $50 |
-|                                           |                                                       |                                                                                                                             | **$1750** | **$175** |
+| Researcher                                         | Affiliation                                           | Bug                                                                                                                         |    Bounty |      ZSF |
+|----------------------------------------------------|-------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|-----------|----------|
+| [Ben Fiedler](https://github.com/ThreeFx)          | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (assertion crash, misdirected reply)](https://github.com/coilhq/viewstamped-replication-made-famous/issues/9)     |      $400 |      $40 |
+| [Ben Fiedler](https://github.com/ThreeFx)          | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (assertion crash, attempts counter wrap)](https://github.com/coilhq/viewstamped-replication-made-famous/issues/8) |      $350 |      $35 |
+| [Ben Fiedler](https://github.com/ThreeFx)          | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (stuck, client pong)](https://github.com/coilhq/viewstamped-replication-made-famous/issues/7)                     |      $500 |      $50 |
+| [Ben Fiedler](https://github.com/ThreeFx)          | [ETHzürich](https://inf.ethz.ch/content/main/en.html) | [Liveness (stuck, io_write_depth)](https://github.com/coilhq/viewstamped-replication-made-famous/issues/5)                  |      $500 |      $50 |
+| [Alex Miller](https://github.com/alexmiller-apple) | [FoundationDB](https://www.foundationdb.org)          | [Correctness (`O_DSYNC` on Darwin is completely broken)](https://twitter.com/oytyafln/status/1532280950779891712)           |     $1024 |     $102 |
+|                                                    |                                                       |                                                                                                                             | **$2774** | **$277** |
 
 ## Who can participate?
 
